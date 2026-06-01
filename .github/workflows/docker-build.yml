@@ -1,0 +1,38 @@
+name: Docker Build
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create backend env file
+        run: |
+          cat > backend/.env <<EOF
+          MONGODB_CONNECTION_STRING=mongodb://root:example@mongodb:27017/todolist?authSource=admin
+          EOF
+
+      - name: Create mongodb env file
+        run: |
+          cat > mongodb/.env <<EOF
+          MONGO_INITDB_ROOT_USERNAME=root
+          MONGO_INITDB_ROOT_PASSWORD=example
+          EOF
+
+      - name: Create mongo-express env file
+        run: |
+          cat > mongo-express/.env <<EOF
+          ME_CONFIG_MONGODB_URL=mongodb://root:example@mongodb:27017/?authSource=admin
+          ME_CONFIG_BASICAUTH_USERNAME=root
+          ME_CONFIG_BASICAUTH_PASSWORD=example
+          EOF
+
+      - name: Build Docker Compose images
+        run: docker compose build

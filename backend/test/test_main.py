@@ -1,9 +1,13 @@
-# tests/test_main.py
+import os
+
+os.environ["MONGODB_CONNECTION_STRING"] = (
+    "mongodb://root:example@localhost:27017/todolist?authSource=admin"
+)
 
 import pytest
 from httpx import AsyncClient, ASGITransport
 
-from src.mysite.main import app
+from mysite.main import app
 
 
 @pytest.mark.asyncio

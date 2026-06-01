@@ -12,3 +12,8 @@ dependencies = [
 ]
 [tools.setuptools.package.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+testpaths = ["test"]
